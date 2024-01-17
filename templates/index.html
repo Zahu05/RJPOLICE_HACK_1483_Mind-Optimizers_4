@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Registration</title>
+    <style>
+        #header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 80px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.096);
+            z-index: 999;
+            position: sticky;
+            top: 0;
+            left: 0;
+        }
+
+        header,
+        footer {
+            padding: 0;
+            margin: 0;
+            /* Remove any margin */
+            top: 0;
+            left: 0;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* Set the path to your background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        header img {
+            max-width: 200px;
+            height: 150px;
+            margin-bottom: 0;
+            border-radius: 50%;
+            /* Make the image circular */
+            overflow: hidden;
+            /* Ensure content does not overflow the circular frame */
+        }
+
+        header h1 {
+            margin: 0;
+            padding-right: 500px;
+            color: #070707;
+            align-content: center;
+            /* Adjust text color to be visible on the background image */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://4.bp.blogspot.com/-PRMNRGHmwo0/WlXjSoAsd9I/AAAAAAAAA8g/fSmtnEABcvIpYn1c9ozIDdc8GgXSEhTOACLcBGAs/s1600/rajasthan%2Bpolice.jpg');
+            background-color: #f2f2f2;
+            margin: 0;
+            /* Remove default margin */
+            padding: 0;
+            /* Remove default padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        form {
+            background-color: #f4f6f6;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            align-items: center;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            /* Center the text in the footer */
+            padding-left: 1200px;
+        }
+    </style>
+    <!-- ... (your existing head content) ... -->
+</head>
+
+<body>
+    <header style="color: #000000; font-family: 'georgia;'">
+        <img src="https://www.rvcj.com/wp-content/uploads/2018/10/Rajasthan-Police.jpg" alt="Government Logo" width="250">
+        <h1 style="font-size: 50px;">FIR Registration System</h1>
+    </header>
+
+    <form id="registrationForm" method="post" action="{{ url_for('predict') }}" enctype="multipart/form-data">
+    <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="aadhar">Aadhar Card Number:</label>
+                <input type="text" id="aadhar" name="aadhar" pattern="[0-9]{12}"
+                    title="Aadhar card number must be 12 digits" required>
+
+                <label for="mobile">Mobile Number:</label>
+                <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" title="Mobile number must be 10 digits"
+                    required>
+
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" rows="4" required></textarea>
+        <label for="fileUpload">Upload PDF:</label>
+        <input type="file" id="fileUpload" name="file" accept=".pdf" required>
+        <button type="submit">Submit</button>
+   
+
+    <h3>Predicted IPC Section:</h3>
+    {% if result %}
+        {% for r in result %}
+            <p>{{ r['ipc_section'] }}: {{ r['score'] }}</p>
+            <p>Description: {{ r['description'] }}</p>
+            <p>Offense: {{ r['offense'] }}</p>
+            <p>Punishment: {{ r['punishment'] }}</p>
+            <p>Bailable: {{ r['bailable'] }}</p>
+            <p>Court: {{ r['court'] }}</p>
+            <hr>  <!-- Add a horizontal line for better separation of results -->
+        {% endfor %}
+    {% else %}
+        <p>No results yet. Please submit the form.</p>
+    {% endif %}
+</form>
+    <footer>
+        <p style="text-align:center;">&copy; 2024 Government Registration System. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
